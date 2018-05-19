@@ -76,14 +76,23 @@ namespace Microsoft.Bot.Sample.LuisBot
                     {
                         var apiResponse = await responsemMsg.Content.ReadAsStringAsync();
                         dynamic lan = JObject.Parse(apiResponse);
-                        var dateTimeStart = lan.lanPartyFinalStartDate;
-                        var dateTimeFinish = lan.lanPartyFinalFinishDate;
+                        DateTime dateTimeStart = lan.lanPartyFinalStartDate;
+                        DateTime dateTimeFinish = lan.lanPartyFinalFinishDate;
                         var lanPartyName = lan.lanPartyName;
                         var lanPartyPlace = lan.lanPartyPlace;
 
+                        var datestart = dateTimeStart.Date.ToString("dd'-'MM'-'yyyy"); 
+                        var datefinish = dateTimeFinish.Date.ToString("dd'-'MM'-'yyyy");
+                        var timestarthour = dateTimeStart.Hour;
+                        var timestartminute = dateTimeStart.Minute;
+                        var timefinishhour = dateTimeFinish.Hour;
+                        var timefinishminute = dateTimeFinish.Minute;
+                        DateTime now = DateTime.Today;
+                        int leftDate = (dateTimeStart - now).Days; 
+
 
                         //Post the API response to bot again
-                        await context.PostAsync($"The next lan {lanPartyName} starts on: {dateTimeStart}. And finishes at {dateTimeFinish}.This lan will be held in {lanPartyPlace}");
+                        await context.PostAsync($"The next lan {lanPartyName} starts on: {datestart} at {timestarthour}:{timestartminute} o'clock. And finishes at {datefinish} at {timefinishhour}:{timefinishminute}.This lan will be held in {lanPartyPlace}. Days until lan: {leftDate}");
 
                     }
                 }
